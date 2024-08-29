@@ -23,5 +23,8 @@ Route::get('/', [TodoController::class, 'index']);
 Route::post('/todos', [TodoController::class, 'store']);
 Route::put('/todos/{id}', [TodoController::class, 'update']);
 Route::get('/todos/filter', [TodoController::class, 'filter']);
+Route::delete('/todos/clear-completed', [TodoController::class, 'clearCompleted']);
+Route::delete('/todos/{id}', [TodoController::class, 'destroy']);
+
 
 

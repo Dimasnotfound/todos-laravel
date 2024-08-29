@@ -52,4 +52,23 @@ class TodoController extends Controller
         return response()->json($todos);
     }
 
+    public function clearCompleted()
+    {
+        Todo::where('completed', true)->delete();
+        return response()->json(['success' => true]);
+    }
+
+    public function destroy($id)
+    {
+        $todo = Todo::find($id);
+
+        if ($todo) {
+            $todo->delete();
+            return response()->json(['success' => true]);
+        }
+
+        return response()->json(['success' => false], 404);
+    }
+
+
 }

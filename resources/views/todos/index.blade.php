@@ -21,6 +21,7 @@
             <button id="show-all" class="btn btn-secondary">All</button>
             <button id="show-active" class="btn btn-secondary">Active</button>
             <button id="show-completed" class="btn btn-secondary">Completed</button>
+            <button id="clear-completed" class="btn btn-warning">Clear Completed</button>
         </div>
 
         <ul id="todo-list" class="list-group">
@@ -30,6 +31,7 @@
                         <input type="checkbox" class="todo-checkbox mr-2" data-id="{{ $todo->id }}" {{ $todo->completed ? 'checked' : '' }}>
                         <span class="todo-title" data-id="{{ $todo->id }}">{{ $todo->title }}</span>
                     </div>
+                    <button class="btn btn-sm btn-danger delete-todo" data-id="{{ $todo->id }}">delete</button>
                 </li>
             @endforeach
         </ul>
@@ -48,6 +50,7 @@
                                     <input type="checkbox" class="todo-checkbox mr-2" data-id="${todo.id}">
                                     <span class="todo-title" data-id="${todo.id}">${todo.title}</span>
                                 </div>
+                                <button class="btn btn-sm btn-danger delete-todo" data-id="${todo.id}">delete</button>
                             </li>`
                         );
                         $('#new-todo').val('');
@@ -69,6 +72,31 @@
                 });
             });
 
+            // Menghapus todo
+            $(document).on('click', '.delete-todo', function() {
+                const id = $(this).data('id');
+                $.ajax({
+                    url: `/todos/${id}`,
+                    type: 'DELETE',
+                    data: { _token: '{{ csrf_token() }}' },
+                    success: function() {
+                        $(`button.delete-todo[data-id="${id}"]`).closest('li').remove();
+                    }
+                });
+            });
+
+            // Menghapus semua todo yang sudah selesai
+            $('#clear-completed').click(function() {
+                $.ajax({
+                    url: '/todos/clear-completed',
+                    type: 'DELETE',
+                    data: { _token: '{{ csrf_token() }}' },
+                    success: function() {
+                        $('#todo-list .completed').remove();
+                    }
+                });
+            });
+
             // Mengambil dan menampilkan todo berdasarkan filter
             function filterTodos(status) {
                 $.ajax({
@@ -84,6 +112,7 @@
                                         <input type="checkbox" class="todo-checkbox mr-2" data-id="${todo.id}" ${todo.completed ? 'checked' : ''}>
                                         <span class="todo-title" data-id="${todo.id}">${todo.title}</span>
                                     </div>
+                                    <button class="btn btn-sm btn-danger delete-todo" data-id="${todo.id}">delete</button>
                                 </li>`
                             );
                         });
