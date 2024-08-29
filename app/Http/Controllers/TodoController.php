@@ -22,12 +22,34 @@ class TodoController extends Controller
         return response()->json($todo);
     }
 
-    public function update($id)
+    public function update(Request $request, $id)
     {
         $todo = Todo::find($id);
-        $todo->completed = !$todo->completed;
-        $todo->save();
 
-        return response()->json($todo);
+        if ($todo) {
+            $todo->completed = $request->has('completed') ? !$todo->completed : $todo->completed;
+            $todo->title = $request->has('title') ? $request->title : $todo->title;
+            $todo->save();
+
+            return response()->json($todo);
+        }
+
+        return response()->json(['error' => 'Todo not found'], 404);
     }
+
+    public function filter(Request $request)
+    {
+        $status = $request->query('status');
+
+        if ($status === 'completed') {
+            $todos = Todo::where('completed', true)->get();
+        } elseif ($status === 'active') {
+            $todos = Todo::where('completed', false)->get();
+        } else {
+            $todos = Todo::all();
+        }
+
+        return response()->json($todos);
+    }
+
 }

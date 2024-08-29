@@ -22,4 +22,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [TodoController::class, 'index']);
 Route::post('/todos', [TodoController::class, 'store']);
 Route::put('/todos/{id}', [TodoController::class, 'update']);
+Route::get('/todos/filter', [TodoController::class, 'filter']);
+
 
