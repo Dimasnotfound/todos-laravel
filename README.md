@@ -26,4 +26,35 @@ Ikuti langkah-langkah di bawah ini untuk meng-clone dan menjalankan proyek ini:
 1. **Clone Repository**
 
    ```bash
-   git clone https://github.com/username/repository-name.git
+   git clone https://github.com/Dimasnotfound/todos-laravel.git
+
+2. **Masuk Kedalam repository**
+
+   ```bash
+   cd todos-laravel
+
+3. **Install dependencies**
+
+   ```bash
+   composer install
+
+4. **Konfigurasi Lingkungan**
+
+   ```bash
+   cp .env.example .env
+
+5. **Generate Key**
+
+   ```bash
+   php artisan key:generate
+
+6. **Migrasi Database**
+   ```bash
+   php artisan migrate
+
+7. **Jalankan Aplikasi**
+   ```bash
+   php artisan serve
+
+
+
